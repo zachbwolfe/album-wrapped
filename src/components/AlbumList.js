@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AlbumList = ({ albums }) => {
+const AlbumList = ({ albums, deleteFunc }) => {
 
     return (
     <div>
@@ -9,7 +9,8 @@ const AlbumList = ({ albums }) => {
         {
           albums.map(
             item => (
-              <li key={item.id}>artist: {item.artist}, album: {item.albumName}</li>
+              <li key={item.id}>artist: {item.artist}, album: {item.albumName}
+              <button onClick={() => deleteFunc(item.albumName, item.artist)}>x</button></li>
             )
           )
         }

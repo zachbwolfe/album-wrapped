@@ -36,6 +36,15 @@ const AlbumForm = () => {
         })
   }
 
+  const deleteEntry = async (albumName, artist) => {
+    await api.deleteAlbum(albumName, artist)
+        .then(response => {
+            console.log(response)
+            getAlbums();
+            console.log(state);
+        })
+  }
+
   useEffect(() => {
     getAlbums();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,7 +94,7 @@ const AlbumForm = () => {
               Add Album
           </button>
       </div>
-      <AlbumList albums={state.albums}/>
+      <AlbumList albums={state.albums} deleteFunc={deleteEntry} />
     </div>
   );
 }
