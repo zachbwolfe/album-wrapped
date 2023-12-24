@@ -10,7 +10,7 @@ const fetchAllAlbums = () =>
 })
 
 const upsertAlbum = (albumName, artist) =>
-  fetch(host + "/" + albumName + "/" + artist, {
+  fetch(host + albumName + "/" + artist, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ const upsertAlbum = (albumName, artist) =>
   })
 
 const deleteAlbum = (albumName, artist) =>
-  fetch(host + "/" + albumName + "/" + artist, {
+  fetch(host + albumName + "/" + artist, {
       method: 'DELETE',
       headers: {
           'Content-Type': 'application/json'
