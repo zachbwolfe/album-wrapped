@@ -1,15 +1,14 @@
 const host = "http://localhost:3000/"
 
-const fetchAllAlbums = () =>
-  fetch(host).then(response => {
+const fetchAllAlbums = async () =>
+  await fetch(host).then(response => {
     console.log("fetching!");
     let resp = response.json();
     console.log(resp);
-    // console.log(resp.length())
       return resp;
 })
 
-const upsertAlbum = (albumName, artist) =>
+const upsertAlbum = async (albumName, artist) =>
   fetch(host + albumName + "/" + artist, {
       method: 'POST',
       headers: {
@@ -19,7 +18,7 @@ const upsertAlbum = (albumName, artist) =>
     return response.json()
   })
 
-const deleteAlbum = (albumName, artist) =>
+const deleteAlbum = async (albumName, artist) =>
   fetch(host + albumName + "/" + artist, {
       method: 'DELETE',
       headers: {

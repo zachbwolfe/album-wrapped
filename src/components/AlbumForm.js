@@ -1,75 +1,93 @@
-import React from 'react'
-import api from '../service/AlbumService'
+import React, { useState, useEffect } from 'react'
 import AlbumList from './AlbumList';
+import api from '../service/AlbumService'
 
-// import {Link} from "react-router-dom";
+const AlbumForm = () => {
 
-export default class AlbumForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      albumName: '',
-      artist: ''
-    }
+  const [state, setState] = useState({
+    albumName: '',
+    artist: '',
+    albums: [],
+    error: null
+  });
+
+  const getAlbums = () => {
+    api.fetchAllAlbums()
+    .then(data => {
+      setState({
+        ...state,
+        artist: '',
+        albumName: '',
+        albums: data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      setState({ error: 'Error fetching data' });
+    });
   }
 
-  createEntry = () => {
-    api.upsertAlbum(this.state.albumName, this.state.artist)
+  const createEntry = async () => {
+    await api.upsertAlbum(state.albumName, state.artist)
         .then(response => {
             console.log(response)
+            getAlbums();
+            console.log(state);
         })
-    this.setState({
-      artist: '',
-      albumName: ''
-    });
-}
+  }
 
-  render() {
-    return (
+  useEffect(() => {
+    getAlbums();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div>
+      <h1>You listen to a new album big dog?</h1>
       <div>
-        <h1>You listen to a new album big dog?</h1>
+      <label>
+            Album Name </label>
+        <div>
+            <input className="form-control"
+              id="albumName"
+              onChange={(event) => setState({
+                ...state,
+                albumName: event.target.value
+              })}
+              value={state.albumName}
+              placeholder=""/>
+        </div>
+        </div>
         <div>
         <label>
-              Album Name </label>
-          <div>
-              <input className="form-control"
-                      id="albumName"
-                      onChange={(event) => this.setState({
-                                                            albumName: event.target.value
-                                                        })}
-                      value={this.state.albumName}
-                      placeholder=""/>
-          </div>
-          </div>
-          <div>
-          <label>
-              Artist </label>
-          <div>
-              <input className="form-control"
-                      id="artist"
-                      onChange={(event) => this.setState({
-                                                            artist: event.target.value
-                                                        })}
-                      value={this.state.artist}
-                      placeholder=""/>
-          </div>
-          </div>
-          <div>
-                        <button
-
-                            onClick={() => {
-                                if (this.state.artist  !== "" &&
-                                    this.state.albumName !== "") {
-                                    this.createEntry()
-                                } else {
-                                  console.log("you need to specify something idiot")
-                                }
-                            }}>
-                            Add Album
-                        </button>
-                    </div>
-        <AlbumList />
+            Artist </label>
+        <div>
+            <input className="form-control"
+              id="artist"
+                onChange={(event) => setState({
+                  ...state,
+                  artist: event.target.value
+                })}
+                value={state.artist}
+          placeholder=""/>
+        </div>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              if (state.artist  !== "" &&
+                  state.albumName !== "") {
+                  createEntry()
+              } else {
+                console.log("you need to specify something idiot")
+              }
+              }}>
+              Add Album
+          </button>
       </div>
-    );
-  }
+      <AlbumList albums={state.albums}/>
+    </div>
+  );
 }
+
+export default AlbumForm;
