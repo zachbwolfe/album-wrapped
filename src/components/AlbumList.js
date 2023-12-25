@@ -10,7 +10,7 @@ const AlbumList = ({ albums, deleteFunc }) => {
           albums.map(
             item => (
               <li key={item.id}>artist: {item.artist}, album: {item.albumName}
-              <button onClick={() => deleteFunc(item.albumName, item.artist)}>x</button></li>
+              <button onClick={() => deleteFunc(item.albumName, item.artist, item.timestamp)}>x</button></li>
             )
           )
         }

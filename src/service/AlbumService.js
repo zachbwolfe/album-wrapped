@@ -9,21 +9,30 @@ const fetchAllAlbums = async () =>
 })
 
 const upsertAlbum = async (albumName, artist) =>
-  fetch(host + albumName + "/" + artist, {
+  fetch(host + "upsert", {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        artist: artist,
+        albumName: albumName
+      })
   }).then(response => {
     return response.json()
   })
 
-const deleteAlbum = async (albumName, artist) =>
-  fetch(host + albumName + "/" + artist, {
+const deleteAlbum = async (albumName, artist, timestamp) =>
+  fetch(host + "delete", {
       method: 'DELETE',
       headers: {
           'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        artist: artist,
+        albumName: albumName,
+        timestamp: timestamp
+      })
   }).then(response => {
       return response.json()
 })

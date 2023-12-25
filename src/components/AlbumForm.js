@@ -14,11 +14,14 @@ const AlbumForm = () => {
   const getAlbums = () => {
     api.fetchAllAlbums()
     .then(data => {
+      const sorted = data.sort(function(a, b) {
+        return b.timestamp - a.timestamp;
+    });
       setState({
         ...state,
         artist: '',
         albumName: '',
-        albums: data
+        albums: sorted
       });
     })
     .catch(error => {
@@ -36,8 +39,8 @@ const AlbumForm = () => {
         })
   }
 
-  const deleteEntry = async (albumName, artist) => {
-    await api.deleteAlbum(albumName, artist)
+  const deleteEntry = async (albumName, artist, timestamp) => {
+    await api.deleteAlbum(albumName, artist, timestamp)
         .then(response => {
             console.log(response)
             getAlbums();
