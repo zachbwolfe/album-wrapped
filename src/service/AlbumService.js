@@ -1,4 +1,5 @@
-const host = "http://localhost:3000/"
+// const host = "http://localhost:3000/"
+const host = "https://album-wrapped-be6fafcd14e6.herokuapp.com/"
 
 const fetchAllAlbums = async () =>
   await fetch(host).then(response => {
