@@ -30,8 +30,8 @@ const AlbumForm = () => {
     });
   }
 
-  const createEntry = async () => {
-    await api.upsertAlbum(state.albumName, state.artist)
+  const createEntry = async (albumName, artist) => {
+    await api.upsertAlbum(albumName, artist)
         .then(response => {
             console.log(response)
             getAlbums();
@@ -89,7 +89,7 @@ const AlbumForm = () => {
             onClick={() => {
               if (state.artist  !== "" &&
                   state.albumName !== "") {
-                  createEntry()
+                  createEntry(state.albumName, state.artist)
               } else {
                 console.log("you need to specify something idiot")
               }
@@ -97,7 +97,7 @@ const AlbumForm = () => {
               Add Album
           </button>
       </div>
-      <AlbumList albums={state.albums} deleteFunc={deleteEntry} />
+      <AlbumList albums={state.albums} createFunc={createEntry} deleteFunc={deleteEntry} />
     </div>
   );
 }
